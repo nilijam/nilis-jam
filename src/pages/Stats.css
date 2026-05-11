@@ -1,0 +1,85 @@
+/* Wrapped hero card */
+.stats-wrapped-card {
+  position:relative; overflow:hidden;
+  background: linear-gradient(135deg, rgba(176,106,255,0.15) 0%, rgba(0,229,204,0.08) 100%);
+  border:1px solid var(--border-subtle); border-radius:var(--radius-xl);
+  padding:2rem 2rem 1.75rem; margin-bottom:1.75rem;
+}
+.stats-wrapped-glow {
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse 70% 60% at 15% 50%, rgba(176,106,255,0.18) 0%, transparent 70%);
+  pointer-events:none;
+}
+.stats-wrapped-msg {
+  font-family:var(--font-display); font-size:clamp(1rem,2.5vw,1.4rem);
+  font-weight:700; margin-bottom:1.25rem; position:relative;
+}
+.stats-wrapped-pills { display:flex; gap:1rem; flex-wrap:wrap; position:relative; }
+.stats-pill {
+  background:rgba(176,106,255,0.12); border:1px solid rgba(176,106,255,0.2);
+  border-radius:var(--radius-md); padding:0.75rem 1.1rem; min-width:90px;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.stats-pill.accent2 { background:rgba(0,229,204,0.1);  border-color:rgba(0,229,204,0.2); }
+.stats-pill.accent3 { background:rgba(255,94,170,0.1); border-color:rgba(255,94,170,0.2); }
+.stats-pill.accent4 { background:rgba(255,179,71,0.1); border-color:rgba(255,179,71,0.2); }
+.stats-pill-val { font-family:var(--font-display); font-size:1.2rem; font-weight:800; color:var(--accent-1); }
+.stats-pill.accent2 .stats-pill-val { color:var(--neon-cyan); }
+.stats-pill.accent3 .stats-pill-val { color:var(--accent-3); }
+.stats-pill.accent4 .stats-pill-val { color:var(--accent-5); }
+.stats-pill-lbl { font-size:0.7rem; color:var(--text-muted); text-align:center; }
+
+/* Grid */
+.stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.5rem; }
+@media(max-width:700px) { .stats-grid { grid-template-columns:1fr; } }
+
+.stats-card {
+  background:var(--bg-surface); border:1px solid var(--border-subtle);
+  border-radius:var(--radius-md); padding:1.25rem;
+}
+.stats-card-title { font-family:var(--font-display); font-weight:700; font-size:0.9rem; margin-bottom:1rem; }
+.stats-empty { color:var(--text-muted); font-size:0.8rem; }
+
+/* Bar chart */
+.stats-bar-chart { display:flex; align-items:flex-end; gap:8px; height:100px; padding-bottom:4px; }
+.stats-bar-col { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; height:100%; }
+.stats-bar-wrap { flex:1; width:100%; display:flex; align-items:flex-end; justify-content:center; }
+.stats-bar-fill {
+  width:60%; min-height:4px; border-radius:4px 4px 0 0;
+  background:linear-gradient(180deg,var(--accent-1),var(--accent-2));
+  transition:height 0.4s var(--ease-out);
+}
+.stats-bar-lbl { font-size:0.65rem; color:var(--text-muted); }
+
+/* Top artists */
+.stats-artists { display:flex; flex-direction:column; gap:0.75rem; }
+.stats-artist-row { display:flex; align-items:center; gap:0.75rem; }
+.stats-artist-rank { font-family:var(--font-display); font-weight:800; font-size:1rem; color:var(--accent-1); width:20px; text-align:center; flex-shrink:0; }
+.stats-artist-info { flex:1; min-width:0; }
+.stats-artist-name { font-size:0.82rem; font-weight:600; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.stats-artist-bar-bg { height:4px; background:var(--bg-elevated); border-radius:2px; overflow:hidden; }
+.stats-artist-bar-fill { height:100%; background:linear-gradient(90deg,var(--accent-1),var(--accent-3)); border-radius:2px; transition:width 0.5s var(--ease-out); }
+.stats-artist-time { font-size:0.72rem; color:var(--text-muted); flex-shrink:0; }
+
+/* History */
+.stats-history { background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1.25rem; }
+.stats-history-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+.stats-clear-btn { font-size:0.75rem; color:var(--text-muted); padding:4px 10px; border-radius:var(--radius-full); background:var(--bg-elevated); transition:background var(--transition),color var(--transition); }
+.stats-clear-btn:hover { background:rgba(255,85,85,0.12); color:#ff5555; }
+.stats-empty-state { text-align:center; padding:2rem; color:var(--text-muted); display:flex; flex-direction:column; align-items:center; gap:0.5rem; }
+.stats-empty-state span { font-size:2.5rem; }
+
+.stats-history-list { display:flex; flex-direction:column; gap:0; max-height:400px; overflow-y:auto; }
+.stats-history-item {
+  display:flex; align-items:center; gap:0.85rem;
+  padding:0.65rem 0.5rem; border-radius:var(--radius-sm);
+  cursor:pointer; transition:background var(--transition);
+  border-bottom:1px solid var(--border-subtle);
+}
+.stats-history-item:last-child { border-bottom:none; }
+.stats-history-item:hover { background:var(--bg-card-hover); }
+.stats-history-cover { width:40px; height:40px; border-radius:8px; object-fit:cover; flex-shrink:0; }
+.stats-history-info { flex:1; min-width:0; }
+.stats-history-title  { font-size:0.82rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.stats-history-artist { font-size:0.72rem; color:var(--text-muted); }
+.stats-history-date   { font-size:0.68rem; color:var(--text-muted); flex-shrink:0; text-align:right; }

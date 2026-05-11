@@ -1,0 +1,207 @@
+/* Hero */
+.home-hero {
+  position: relative;
+  margin-bottom: 3rem;
+  padding: 2.5rem;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg,
+    rgba(176,106,255,0.08) 0%,
+    rgba(255,94,170,0.04) 50%,
+    rgba(0,229,204,0.04) 100%
+  );
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+.home-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -20%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(176,106,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.home-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%; left: 40%;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(0,229,204,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.home-greeting {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-1) 55%, var(--accent-3) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+  position: relative;
+  z-index: 1;
+}
+.home-sub {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  position: relative;
+  z-index: 1;
+}
+
+.home-section { margin-bottom: 2.75rem; }
+
+/* Artist chips */
+.artists-scroll {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+  scrollbar-width: none;
+}
+.artists-scroll::-webkit-scrollbar { display: none; }
+
+.artist-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: var(--transition);
+  padding: 4px;
+}
+.artist-chip:hover { transform: translateY(-4px); }
+
+.artist-chip-img {
+  width: 78px; height: 78px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-subtle);
+  transition: var(--transition);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.artist-chip:hover .artist-chip-img {
+  border-color: var(--accent-1);
+  box-shadow: 0 0 0 3px rgba(176,106,255,0.2), 0 8px 24px rgba(176,106,255,0.2);
+}
+.artist-chip-name {
+  font-size: 0.7rem; font-weight: 600;
+  color: var(--text-secondary);
+  max-width: 78px;
+  text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: var(--transition);
+}
+.artist-chip:hover .artist-chip-name { color: var(--text-primary); }
+
+/* Featured artists section (Brandy, Aaliyah, Tyla, Gabon) */
+.featured-artists-section {
+  margin-bottom: 2.75rem;
+}
+.featured-artists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+.featured-artist-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 3/4;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  transition: var(--transition);
+  group: true;
+}
+.featured-artist-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px var(--border-glow);
+  border-color: var(--border-glow);
+}
+.featured-artist-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.featured-artist-card:hover img { transform: scale(1.08); }
+.featured-artist-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(7,7,13,0.95) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+}
+.featured-artist-card-name {
+  font-family: var(--font-display);
+  font-size: 0.85rem; font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+.featured-artist-card-tag {
+  font-size: 0.62rem;
+  color: var(--accent-1);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 2px;
+}
+.featured-artist-card-play {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(176,106,255,0.85);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  opacity: 0;
+  transition: var(--transition);
+  transform: scale(0.8);
+}
+.featured-artist-card:hover .featured-artist-card-play {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Gabon badge */
+.gabon-badge {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: linear-gradient(135deg, #009E60, #FCD116);
+  color: #000;
+  font-size: 0.58rem; font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Top tracks header */
+.home-tracks-header {
+  display: grid;
+  grid-template-columns: 28px 42px 1fr minmax(0,1fr) 32px 52px;
+  gap: 10px;
+  padding: 4px 14px 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 4px;
+}
+
+/* Loading */
+.loading-state { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 4rem; color: var(--text-muted); }
+.spinner { width: 32px; height: 32px; border: 2.5px solid var(--border-subtle); border-top-color: var(--accent-1); border-radius: 50%; animation: spin 0.75s linear infinite; }
+
+@media (max-width: 640px) {
+  .home-tracks-header { display: none; }
+  .home-greeting { font-size: 1.75rem; }
+  .home-hero { padding: 1.75rem; }
+  .featured-artists-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+}

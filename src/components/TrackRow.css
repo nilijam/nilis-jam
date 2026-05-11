@@ -1,0 +1,104 @@
+.track-row {
+  display: grid;
+  grid-template-columns: 28px 42px 1fr minmax(0,1fr) 32px 52px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-secondary);
+  position: relative;
+  overflow: hidden;
+}
+.track-row::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(176,106,255,0.06) 0%, transparent 70%);
+  opacity: 0;
+  transition: var(--transition);
+  pointer-events: none;
+}
+.track-row:hover { background: var(--bg-card); color: var(--text-primary); }
+.track-row:hover::before { opacity: 1; }
+.track-row.active { color: var(--accent-1); background: rgba(176,106,255,0.06); }
+.track-row.active::before { opacity: 1; }
+
+.track-num { display: flex; align-items: center; justify-content: center; }
+.track-index { font-size: 0.78rem; color: var(--text-muted); }
+.track-bars { display: flex; align-items: flex-end; gap: 1.5px; height: 12px; }
+.track-bars span {
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent-3), var(--accent-1));
+  border-radius: 2px;
+  animation: bar 0.7s ease-in-out infinite alternate;
+}
+.track-bars span:nth-child(1) { height: 6px; animation-delay: 0s; }
+.track-bars span:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+.track-bars span:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+
+.track-cover {
+  width: 42px; height: 42px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--border-subtle);
+  transition: var(--transition);
+}
+.track-row:hover .track-cover { border-color: var(--border-glow); transform: scale(1.04); }
+
+.track-meta { overflow: hidden; }
+.track-title {
+  font-size: 0.85rem; font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.track-row.active .track-title {
+  color: var(--accent-1);
+  text-shadow: 0 0 20px rgba(176,106,255,0.3);
+}
+.track-artist { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.track-album { font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-muted); }
+
+.track-fav {
+  color: var(--text-muted); opacity: 0;
+  transition: var(--transition);
+  display: flex; align-items: center;
+  padding: 4px;
+}
+.track-row:hover .track-fav { opacity: 1; }
+.track-fav.on { opacity: 1; color: var(--neon-pink); filter: drop-shadow(0 0 4px var(--glow-pink)); }
+.track-fav:hover { color: var(--neon-pink); transform: scale(1.2); }
+
+.track-duration { font-size: 0.75rem; color: var(--text-muted); text-align: right; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 640px) {
+  .track-row { grid-template-columns: 28px 38px 1fr 32px 46px; }
+  .track-album { display: none; }
+}
+
+/* ── Context menu ───────────────────────────────────────────── */
+.track-menu-wrap { position:relative; flex-shrink:0; }
+.track-menu-btn {
+  color:var(--text-muted); opacity:0; padding:4px 6px;
+  border-radius:6px; transition:opacity var(--transition),background var(--transition),color var(--transition);
+}
+.track-row:hover .track-menu-btn { opacity:1; }
+.track-menu-btn:hover { background:var(--bg-elevated); color:var(--text-primary); }
+
+.track-menu-dropdown {
+  position:absolute; right:0; bottom:calc(100% + 4px);
+  background:var(--bg-elevated); border:1px solid var(--border-subtle);
+  border-radius:var(--radius-md); box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  min-width:200px; z-index:100; overflow:hidden;
+  animation:fadeIn 0.15s var(--ease-out);
+}
+.track-menu-item {
+  display:block; width:100%; text-align:left;
+  padding:0.6rem 1rem; font-size:0.82rem; color:var(--text-secondary);
+  transition:background var(--transition),color var(--transition);
+}
+.track-menu-item:hover { background:var(--bg-card-hover); color:var(--text-primary); }
+.track-menu-sep { height:1px; background:var(--border-subtle); margin:0.25rem 0; }
+.track-menu-label { font-size:0.68rem; color:var(--text-muted); padding:0.25rem 1rem; text-transform:uppercase; letter-spacing:0.05em; }

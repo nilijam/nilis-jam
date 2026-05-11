@@ -1,0 +1,127 @@
+.music-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid var(--border-subtle);
+  position: relative;
+  overflow: hidden;
+}
+.music-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(176,106,255,0.04) 0%, transparent 60%);
+  opacity: 0;
+  transition: var(--transition);
+  pointer-events: none;
+}
+.music-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(176,106,255,0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(176,106,255,0.12), 0 4px 20px var(--glow-purple);
+}
+.music-card:hover::before { opacity: 1; }
+
+.music-card.active {
+  border-color: rgba(176,106,255,0.45);
+  background: rgba(176,106,255,0.06);
+  box-shadow: 0 0 0 1px rgba(176,106,255,0.2), 0 8px 32px rgba(176,106,255,0.15);
+}
+
+.card-cover-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  background: var(--bg-elevated);
+}
+.card-cover {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.music-card:hover .card-cover { transform: scale(1.05); }
+
+.card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.6) 100%);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transition: var(--transition);
+}
+.music-card:hover .card-overlay,
+.music-card.active .card-overlay { opacity: 1; }
+
+.card-play-btn {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+  box-shadow: 0 0 24px rgba(176,106,255,0.5);
+  transform: scale(0.85);
+}
+.music-card:hover .card-play-btn,
+.music-card.active .card-play-btn { transform: scale(1); }
+.card-play-btn:hover { transform: scale(1.12) !important; box-shadow: 0 0 36px rgba(176,106,255,0.7); }
+
+.card-playing-bar {
+  position: absolute; bottom: 8px; right: 8px;
+  display: flex; align-items: flex-end; gap: 2px; height: 14px;
+}
+.card-playing-bar span {
+  width: 2.5px;
+  background: linear-gradient(180deg, var(--accent-3), var(--accent-1));
+  border-radius: 2px;
+  animation: bar 0.7s ease-in-out infinite alternate;
+}
+.card-playing-bar span:nth-child(1) { height: 8px; animation-delay: 0s; }
+.card-playing-bar span:nth-child(2) { height: 14px; animation-delay: 0.15s; }
+.card-playing-bar span:nth-child(3) { height: 6px; animation-delay: 0.3s; }
+
+.card-local-badge {
+  position: absolute; top: 7px; left: 7px;
+  background: var(--neon-cyan);
+  color: #000;
+  font-size: 0.58rem; font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+.card-info { padding: 0 2px; margin-bottom: 6px; }
+.card-title {
+  font-size: 0.83rem; font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+.card-artist {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.card-fav-btn {
+  position: absolute; top: 10px; right: 10px;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(7,7,13,0.75);
+  backdrop-filter: blur(6px);
+  color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+  opacity: 0;
+  border: 1px solid var(--border-subtle);
+}
+.music-card:hover .card-fav-btn { opacity: 1; }
+.card-fav-btn.active { opacity: 1; color: var(--neon-pink); border-color: rgba(255,94,170,0.3); box-shadow: 0 0 12px var(--glow-pink); }
+.card-fav-btn:hover { color: var(--neon-pink); transform: scale(1.15); border-color: rgba(255,94,170,0.5); }

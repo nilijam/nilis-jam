@@ -1,0 +1,102 @@
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 11px 18px;
+  transition: var(--transition);
+  color: var(--text-muted);
+  position: relative;
+}
+.search-bar:focus-within {
+  border-color: var(--border-glow);
+  background: var(--bg-card-hover);
+  box-shadow:
+    0 0 0 3px rgba(176,106,255,0.1),
+    0 0 24px rgba(176,106,255,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+  color: var(--text-secondary);
+}
+
+.search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+.search-input::placeholder { color: var(--text-muted); }
+
+.search-clear {
+  color: var(--text-muted);
+  display: flex; align-items: center;
+  transition: var(--transition);
+  padding: 2px;
+  border-radius: 50%;
+}
+.search-clear:hover { color: var(--text-primary); background: rgba(176,106,255,0.1); }
+
+/* Suggestions dropdown */
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0; right: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  z-index: 300;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(176,106,255,0.08);
+  animation: fadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  border-bottom: 1px solid rgba(176,106,255,0.05);
+}
+.suggestion-item:last-child { border-bottom: none; }
+.suggestion-item:hover { background: rgba(176,106,255,0.06); }
+
+.suggestion-img {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border-subtle);
+}
+.suggestion-img.round { border-radius: 50%; }
+
+.suggestion-info { min-width: 0; flex: 1; }
+.suggestion-title {
+  font-size: 0.83rem; font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.suggestion-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+.suggestion-type {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+.suggestion-type.artist {
+  background: rgba(176,106,255,0.12);
+  color: var(--accent-1);
+}
+.suggestion-type.track {
+  background: rgba(255,94,170,0.1);
+  color: var(--accent-3);
+}

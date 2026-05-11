@@ -1,0 +1,59 @@
+.loader-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  padding: 4rem;
+}
+
+.loader-fullscreen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-base);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(176, 106, 255, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0, 229, 204, 0.05) 0%, transparent 55%);
+  z-index: 9999;
+}
+
+.loader-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 36px;
+}
+
+.loader-bar {
+  display: block;
+  width: 5px;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--neon-purple), var(--neon-pink));
+  box-shadow: 0 0 10px var(--glow-purple);
+  animation: bar 0.7s ease-in-out infinite alternate;
+  transform-origin: bottom;
+}
+
+.loader-bar:nth-child(2) {
+  background: linear-gradient(180deg, var(--neon-pink), var(--neon-purple));
+}
+.loader-bar:nth-child(3) {
+  background: linear-gradient(180deg, var(--neon-cyan), var(--neon-blue));
+  box-shadow: 0 0 10px var(--glow-teal);
+}
+.loader-bar:nth-child(4) {
+  background: linear-gradient(180deg, var(--neon-purple), var(--neon-pink));
+}
+.loader-bar:nth-child(5) {
+  background: linear-gradient(180deg, var(--neon-pink), var(--accent-5));
+}
+
+.loader-label {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
