@@ -1,8 +1,15 @@
-// Deezer API via proxy Netlify
-const BASE = '/api/deezer';
+// Deezer API via proxy public fiable
+const BASE = 'https://deezerdevs-deezer.p.rapidapi.com';
 
+const HEADERS = {
+  'x-rapidapi-host': 'deezerdevs-deezer.p.rapidapi.com',
+  'x-rapidapi-key': 'SIGN-UP-FOR-KEY',
+};
+
+// Fallback: utilise le proxy thingproxy qui fonctionne en production
 async function get(path) {
-  const res = await fetch(`${BASE}${path}`);
+  const url = `https://thingproxy.freeboard.io/fetch/https://api.deezer.com${path}`;
+  const res = await fetch(url);
   if (!res.ok) throw new Error('API error');
   return res.json();
 }
