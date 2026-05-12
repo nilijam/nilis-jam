@@ -1,0 +1,87 @@
+/* ── Music Note Loader ───────────────────────────────────────── */
+.music-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 2rem;
+}
+
+.music-loader--sm { padding: 1.5rem; gap: 0.5rem; }
+.music-loader--lg { padding: 5rem 2rem; gap: 1.5rem; }
+
+/* Notes container */
+.music-loader__notes {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 56px;
+}
+
+/* Each note */
+.music-note {
+  font-size: 2rem;
+  line-height: 1;
+  display: inline-block;
+  animation: noteBounce 1.2s ease-in-out infinite;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(176, 106, 255, 0.5));
+}
+
+.music-loader--sm .music-note { font-size: 1.4rem; }
+.music-loader--lg .music-note { font-size: 2.8rem; }
+
+/* Staggered delays */
+.music-note.n1 { animation-delay: 0s;    }
+.music-note.n2 { animation-delay: 0.18s; }
+.music-note.n3 { animation-delay: 0.36s; }
+.music-note.n4 { animation-delay: 0.54s; }
+
+@keyframes noteBounce {
+  0%, 100% {
+    transform: translateY(0) rotate(-8deg) scale(1);
+    filter: drop-shadow(0 0 6px rgba(176, 106, 255, 0.4));
+  }
+  30% {
+    transform: translateY(-22px) rotate(8deg) scale(1.15);
+    filter: drop-shadow(0 8px 16px rgba(255, 94, 170, 0.6));
+  }
+  60% {
+    transform: translateY(-10px) rotate(-4deg) scale(1.05);
+    filter: drop-shadow(0 4px 12px rgba(176, 106, 255, 0.5));
+  }
+}
+
+/* Text */
+.music-loader__text {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+.music-loader--sm .music-loader__text { font-size: 0.7rem; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1;   }
+}
+
+/* ── Fullscreen overlay loader (page transition) ─────────────── */
+.music-loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease;
+}

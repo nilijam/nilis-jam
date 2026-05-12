@@ -4,6 +4,7 @@ import { getChart, getChartArtists, getArtistTracks } from '../services/api';
 import { usePlayer } from '../context/PlayerContext';
 import MusicCard from '../components/MusicCard';
 import TrackRow from '../components/TrackRow';
+import MusicLoader from '../components/MusicLoader';
 import './Home.css';
 
 // Featured artists: Brandy, Aaliyah, Tyla + Gabonais
@@ -58,7 +59,6 @@ const FEATURED_ARTISTS = [
   },
 ];
 
-// Fallback Deezer IDs for featured artists when search fails
 const DEEZER_ARTIST_IDS = {
   'Brandy': 1218,
   'Aaliyah': 6731,
@@ -102,10 +102,7 @@ export default function Home() {
       </div>
 
       {loading ? (
-        <div className="loading-state">
-          <div className="spinner" />
-          <p>Chargement des charts...</p>
-        </div>
+        <MusicLoader text="Chargement des charts…" size="lg" />
       ) : (
         <>
           {/* Top Artists from Deezer */}
