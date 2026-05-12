@@ -1,5 +1,5 @@
-// Deezer API via public CORS proxy
-const BASE = 'https://corsproxy.io/?https://api.deezer.com';
+// Deezer API via proxy Netlify
+const BASE = '/api/deezer';
 
 async function get(path) {
   const res = await fetch(`${BASE}${path}`);
