@@ -1,57 +1,116 @@
+/* EventCard.css */
+
 .event-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  background: #111120;
+  border-radius: 14px;
   overflow: hidden;
-  transition: var(--transition);
-  position: relative;
+  border: 1px solid #1a1a35;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 .event-card:hover {
-  border-color: rgba(176,106,255,0.3);
   transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(176,106,255,0.1);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
 }
-.event-img { width: 100%; height: 160px; object-fit: cover; display: block; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
-.event-card:hover .event-img { transform: scale(1.04); }
-.event-img-wrap { overflow: hidden; position: relative; }
-.event-img-wrap::after {
-  content: '';
+
+/* Gabon card — léger highlight vert/jaune */
+.event-card-gabon {
+  border-color: #009e60;
+  box-shadow: 0 0 0 1px rgba(0, 158, 96, 0.25);
+}
+
+.event-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+.event-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+.event-card:hover .event-image { transform: scale(1.04); }
+
+/* Type badge */
+.event-type-badge {
   position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 60px;
-  background: linear-gradient(0deg, var(--bg-card) 0%, transparent 100%);
+  top: 10px;
+  left: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-.event-body { padding: 1rem; }
-.event-date {
-  font-size: 0.67rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.12em;
-  color: var(--accent-1);
-  margin-bottom: 4px;
+.type-festival  { background: #b06aff22; color: #b06aff; border: 1px solid #b06aff55; }
+.type-concert   { background: #3b82f622; color: #60a5fa; border: 1px solid #3b82f655; }
+.type-showcase  { background: #f59e0b22; color: #fbbf24; border: 1px solid #f59e0b55; }
+.type-club      { background: #ec489922; color: #f472b6; border: 1px solid #ec489955; }
+
+/* Gabon badge */
+.event-gabon-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(0, 158, 96, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(0, 158, 96, 0.4);
 }
-.event-name {
-  font-family: var(--font-display);
-  font-size: 0.95rem; font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 4px;
+
+.event-body { padding: 14px 16px 16px; }
+
+.event-artist {
+  color: #b06aff;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.event-title {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 10px;
   line-height: 1.3;
 }
-.event-venue { font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+
+.event-meta { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.event-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666680;
+  font-size: 12px;
+}
+
 .event-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 1rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 .event-price {
-  font-family: var(--font-display);
-  font-size: 0.88rem; font-weight: 700;
-  color: var(--accent-4);
+  color: #4ade80;
+  font-size: 13px;
+  font-weight: 700;
 }
 .event-btn {
-  font-size: 0.75rem; font-weight: 600;
+  background: #1a1a35;
+  color: #a0a0c0;
+  border: 1px solid #2a2a50;
   padding: 6px 14px;
-  border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  color: white;
-  transition: var(--transition);
-  box-shadow: 0 0 16px var(--glow-purple);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
-.event-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--glow-purple); }
+.event-btn:hover { border-color: #b06aff; color: #b06aff; }
+.event-btn.active { background: #b06aff22; border-color: #b06aff; color: #b06aff; }

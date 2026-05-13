@@ -5,10 +5,11 @@ export default function EventCard({ event }) {
   const [interested, setInterested] = useState(event.interested || false);
 
   return (
-    <div className="event-card">
+    <div className={`event-card ${event.gabon ? 'event-card-gabon' : ''}`}>
       <div className="event-image-wrap">
         <img src={event.image} alt={event.title} className="event-image" loading="lazy" />
         <span className={`event-type-badge type-${event.type}`}>{event.type}</span>
+        {event.gabon && <span className="event-gabon-badge">🇬🇦 Gabon</span>}
       </div>
       <div className="event-body">
         <p className="event-artist">{event.artist}</p>
@@ -18,12 +19,12 @@ export default function EventCard({ event }) {
           <span className="event-meta-item"><LocationIcon /> {event.location}</span>
         </div>
         <div className="event-footer">
-          <span className="event-price">{event.price || 'Free'}</span>
+          <span className="event-price">{event.price || 'Gratuit'}</span>
           <button
             className={`event-btn ${interested ? 'active' : ''}`}
             onClick={() => setInterested(v => !v)}
           >
-            {interested ? '✓ Interested' : 'Interested'}
+            {interested ? '✓ Intéressé' : 'Intéressé'}
           </button>
         </div>
       </div>
