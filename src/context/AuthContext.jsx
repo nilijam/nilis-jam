@@ -12,7 +12,7 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '../../../nilsjam/firebase';
+import { auth, db } from '../../firebase';
 import { sendWelcomeEmail, generateConfirmCode } from '../services/emailService';
 
 const AuthContext = createContext(null);
