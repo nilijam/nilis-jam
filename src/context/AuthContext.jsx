@@ -1,51 +1,119 @@
+/**
+ * src/context/AuthContext.jsx
+ * AuthContext Firebase — avec envoi email de bienvenue après inscription
+ */
+
 import { createContext, useContext, useState, useEffect } from 'react';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile,
+} from 'firebase/auth';
+import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../../../nilsjam/firebase';
+import { sendWelcomeEmail, generateConfirmCode } from '../services/emailService';
+
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser]       = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const session = localStorage.getItem('nilsjam_session');
-    if (session) {
-      try { setUser(JSON.parse(session)); } catch { localStorage.removeItem('nilsjam_session'); }
-    }
-    setLoading(false);
+    const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const docRef  = doc(db, 'users', firebaseUser.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setUser({ id: firebaseUser.uid, ...docSnap.data() });
+        } else {
+          setUser({
+            id:       firebaseUser.uid,
+            email:    firebaseUser.email,
+            username: firebaseUser.displayName || 'User',
+          });
+        }
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+    return unsub;
   }, []);
 
-  const register = ({ username, email, password }) => {
-    const users = JSON.parse(localStorage.getItem('nilsjam_users') || '[]');
-    if (users.find(u => u.email === email))    return { ok:false, error:'Un compte existe déjà avec cet email.' };
-    if (users.find(u => u.username === username)) return { ok:false, error:"Ce nom d'utilisateur est déjà pris." };
-    const newUser = {
-      id: Date.now().toString(), username, email, password,
-      createdAt: new Date().toISOString(),
-      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=b06aff&color=fff&bold=true&size=128`,
-    };
-    users.push(newUser);
-    localStorage.setItem('nilsjam_users', JSON.stringify(users));
-    const session = { id:newUser.id, username:newUser.username, email:newUser.email, avatar:newUser.avatar };
-    localStorage.setItem('nilsjam_session', JSON.stringify(session));
-    setUser(session);
-    return { ok:true };
+  // ─────────────────────────────────────────────
+  // REGISTER — inscription + envoi email
+  // ─────────────────────────────────────────────
+  const register = async ({ username, email, password }) => {
+    try {
+      // 1. Créer le compte Firebase Auth
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(cred.user, { displayName: username });
+
+      // 2. Générer le code de confirmation
+      const confirmCode = generateConfirmCode();
+      const createdAt   = new Date().toISOString();
+      const avatar      = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=b06aff&color=fff&bold=true&size=128`;
+
+      // 3. Sauvegarder dans Firestore (avec le code)
+      const userData = {
+        id: cred.user.uid,
+        username,
+        email,
+        avatar,
+        createdAt,
+        confirmCode,        // stocké pour vérification éventuelle
+        emailConfirmed: false,
+        plan: 'free',
+      };
+      await setDoc(doc(db, 'users', cred.user.uid), userData);
+      setUser(userData);
+
+      // 4. Envoyer le mail de bienvenue (non bloquant)
+      sendWelcomeEmail({ username, email, createdAt, confirmCode });
+
+      return { ok: true };
+    } catch (e) {
+      const msgs = {
+        'auth/email-already-in-use': 'Un compte existe déjà avec cet email.',
+        'auth/weak-password':        'Mot de passe trop faible (min 6 caractères).',
+        'auth/invalid-email':        'Email invalide.',
+      };
+      return { ok: false, error: msgs[e.code] || e.message };
+    }
   };
 
-  const login = ({ email, password }) => {
-    const users = JSON.parse(localStorage.getItem('nilsjam_users') || '[]');
-    const found = users.find(u => u.email === email && u.password === password);
-    if (!found) return { ok:false, error:'Email ou mot de passe incorrect.' };
-    const session = { id:found.id, username:found.username, email:found.email, avatar:found.avatar };
-    localStorage.setItem('nilsjam_session', JSON.stringify(session));
-    setUser(session);
-    return { ok:true };
+  // ─────────────────────────────────────────────
+  // LOGIN
+  // ─────────────────────────────────────────────
+  const login = async ({ email, password }) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      return { ok: true };
+    } catch (e) {
+      const msgs = {
+        'auth/user-not-found':    'Aucun compte avec cet email.',
+        'auth/wrong-password':    'Mot de passe incorrect.',
+        'auth/invalid-credential':'Email ou mot de passe incorrect.',
+      };
+      return { ok: false, error: msgs[e.code] || e.message };
+    }
   };
 
-  const logout = () => { localStorage.removeItem('nilsjam_session'); setUser(null); };
+  // ─────────────────────────────────────────────
+  // LOGOUT / UPDATE
+  // ─────────────────────────────────────────────
+  const logout = async () => {
+    await signOut(auth);
+    setUser(null);
+  };
 
-  const updateUser = (updates) => {
-    const session = { ...user, ...updates };
-    localStorage.setItem('nilsjam_session', JSON.stringify(session));
-    setUser(session);
+  const updateUser = async (updates) => {
+    if (!user) return;
+    await updateDoc(doc(db, 'users', user.id), updates);
+    setUser(prev => ({ ...prev, ...updates }));
   };
 
   return (
