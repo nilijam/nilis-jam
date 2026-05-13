@@ -1,6 +1,6 @@
 /**
  * src/context/AuthContext.jsx
- * AuthContext Firebase — avec envoi email de bienvenue après inscription
+ * AuthContext Firebase — avec vérification email + envoi mail de bienvenue
  */
 
 import { createContext, useContext, useState, useEffect } from 'react';
@@ -48,30 +48,27 @@ export function AuthProvider({ children }) {
   // ─────────────────────────────────────────────
   const register = async ({ username, email, password }) => {
     try {
-      // 1. Créer le compte Firebase Auth
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(cred.user, { displayName: username });
 
-      // 2. Générer le code de confirmation
       const confirmCode = generateConfirmCode();
       const createdAt   = new Date().toISOString();
       const avatar      = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=b06aff&color=fff&bold=true&size=128`;
 
-      // 3. Sauvegarder dans Firestore (avec le code)
       const userData = {
         id: cred.user.uid,
         username,
         email,
         avatar,
         createdAt,
-        confirmCode,        // stocké pour vérification éventuelle
+        confirmCode,
         emailConfirmed: false,
         plan: 'free',
       };
       await setDoc(doc(db, 'users', cred.user.uid), userData);
       setUser(userData);
 
-      // 4. Envoyer le mail de bienvenue (non bloquant)
+      // Envoyer le mail de bienvenue (non bloquant)
       sendWelcomeEmail({ username, email, createdAt, confirmCode });
 
       return { ok: true };
@@ -86,6 +83,25 @@ export function AuthProvider({ children }) {
   };
 
   // ─────────────────────────────────────────────
+  // VERIFY CODE — vérification du code email
+  // ─────────────────────────────────────────────
+  const verifyCode = async (inputCode) => {
+    if (!user) return { ok: false, error: 'Utilisateur non connecté.' };
+
+    if (inputCode !== user.confirmCode) {
+      return { ok: false, error: 'Code incorrect. Vérifie ton email.' };
+    }
+
+    try {
+      await updateDoc(doc(db, 'users', user.id), { emailConfirmed: true });
+      setUser(prev => ({ ...prev, emailConfirmed: true }));
+      return { ok: true };
+    } catch (e) {
+      return { ok: false, error: 'Erreur lors de la vérification.' };
+    }
+  };
+
+  // ─────────────────────────────────────────────
   // LOGIN
   // ─────────────────────────────────────────────
   const login = async ({ email, password }) => {
@@ -94,9 +110,9 @@ export function AuthProvider({ children }) {
       return { ok: true };
     } catch (e) {
       const msgs = {
-        'auth/user-not-found':    'Aucun compte avec cet email.',
-        'auth/wrong-password':    'Mot de passe incorrect.',
-        'auth/invalid-credential':'Email ou mot de passe incorrect.',
+        'auth/user-not-found':     'Aucun compte avec cet email.',
+        'auth/wrong-password':     'Mot de passe incorrect.',
+        'auth/invalid-credential': 'Email ou mot de passe incorrect.',
       };
       return { ok: false, error: msgs[e.code] || e.message };
     }
@@ -117,7 +133,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser, verifyCode }}>
       {children}
     </AuthContext.Provider>
   );

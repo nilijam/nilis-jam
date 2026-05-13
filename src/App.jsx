@@ -13,6 +13,7 @@ import Radio from './pages/Radio';
 import EpubReader from './pages/EpubReader';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Verify from './pages/Verify';
 import Playlists from './pages/Playlists';
 import Stats from './pages/Stats';
 import Profile from './pages/Profile';
@@ -25,6 +26,7 @@ export default function App() {
           <Routes>
             <Route path="/login"    element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/verify"   element={<Verify />} />
             <Route
               path="/*"
               element={
