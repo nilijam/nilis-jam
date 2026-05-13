@@ -16,12 +16,10 @@ export default function Login() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
-    // Effacer l'erreur du champ dès que l'utilisateur retape
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
     setGlobalError('');
   };
 
-  // Validation côté client avant d'appeler login()
   const validate = () => {
     const newErrors = {};
     if (!form.email.trim()) newErrors.email = 'L\'email est requis.';
@@ -30,7 +28,7 @@ export default function Login() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -39,16 +37,13 @@ export default function Login() {
     }
 
     setLoading(true);
-    // Simulation d'un délai réseau (200ms) pour rendre ça réaliste
-    setTimeout(() => {
-      const result = login({ email: form.email, password: form.password });
-      if (result.ok) {
-        navigate('/');
-      } else {
-        setGlobalError(result.error);
-      }
-      setLoading(false);
-    }, 200);
+    const result = await login({ email: form.email, password: form.password });
+    if (result.ok) {
+      navigate('/');
+    } else {
+      setGlobalError(result.error);
+    }
+    setLoading(false);
   };
 
   return (
