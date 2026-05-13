@@ -14,6 +14,7 @@ import EpubReader from './pages/EpubReader';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Verify from './pages/Verify';
+import Subscription from './pages/Subscription';
 import Playlists from './pages/Playlists';
 import Stats from './pages/Stats';
 import Profile from './pages/Profile';
@@ -24,9 +25,10 @@ export default function App() {
       <PlayerProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/login"    element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/verify"   element={<Verify />} />
+            <Route path="/login"        element={<Login />} />
+            <Route path="/register"     element={<Register />} />
+            <Route path="/verify"       element={<Verify />} />
+            <Route path="/subscription" element={<Subscription />} />
             <Route
               path="/*"
               element={
